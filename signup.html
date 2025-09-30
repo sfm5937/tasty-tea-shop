@@ -47,5 +47,39 @@
     <footer class="bg-dark text-white text-center p-3 mt-4">
         <p>© 2025 Tasty Tea Shop | <a href="#" class="text-white">Terms of Use</a></p>
     </footer>
+    <script>
+    function validate(obj) {
+        obj.style.color = "#000000";
+        let value = obj.value.trim();
+
+        if(value === "") {
+            obj.style.color = "#FF0000";
+            alert(obj.placeholder + " is required!");
+            return false;
+        }
+
+        if(obj.id === "email") {
+            let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if(!emailPattern.test(value)) {
+                obj.style.color = "#FF0000";
+                alert("Please enter a valid email address (e.g., joe@test.com).");
+                return false;
+            }
+        }
+
+        
+        if(obj.id === "confirmPassword" || obj.id === "password") {
+            let password = document.getElementById("password").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            if(password !== "" && confirmPassword !== "" && password !== confirmPassword) {
+                document.getElementById("confirmPassword").style.color = "#FF0000";
+                alert("Passwords do not match!");
+                return false;
+            }
+        }
+
+        return true;
+    }
+    </script>
 </body>
 </html>
