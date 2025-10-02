@@ -21,24 +21,29 @@
         <a href="#" class="me-3">Contact Us</a>
     </nav>
 
-    <main class="container my-4" onsubmit="return validateForm()">
+    <main class="container my-4">
         <h2>User Signup</h2>
         <form class="mt-3">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" placeholder="Enter username">
+                <span class="error text-danger" id="usernameError"></span>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email">
+                <span class="error text-danger" id="emailError"></span>
+                
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" placeholder="Enter password">
+                <span class="error text-danger" id="passwordError></span>
             </div>
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">Confirm Password</label>
                 <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+                <span class="error text-danger" id="confirmPasswordError"></span>
             </div>
             <button type="submit" class="btn btn-primary">Sign Up</button>
         </form>
@@ -49,50 +54,49 @@
     </footer>
     
     <script>
-    function validateForm() {
-    let username = document.getElementById("username");
-    let email = document.getElementById("email");
-    let password = document.getElementById("password");
-    let confirmPassword = document.getElementById("confirmPassword");
+      document.getElementById("signupForm").addEventListener("submit", function(event) {
+            let isValid = true;
 
-    let valid = true;
+            // Clear old errors
+            document.querySelectorAll(".error").forEach(e => e.innerText = "");
 
-    [username, email, password, confirmPassword].forEach(obj => obj.style.color = "#000000");
+            // Username validation
+            let username = document.getElementById("username").value.trim();
+            if (username === "") {
+                document.getElementById("usernameError").innerText = "Username is required.";
+                isValid = false;
+            }
 
-    if(username.value.trim() === "") {
-        username.style.color = "#FF0000";
-        alert("Username is required!");
-        valid = false;
-        return false;
-    }
+            // Email validation
+            let email = document.getElementById("email").value.trim();
+            let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (email === "" || !email.match(emailPattern)) {
+                document.getElementById("emailError").innerText = "Enter a valid email (e.g., joe@test.com).";
+                isValid = false;
+            }
 
-    
-    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-    if(!emailPattern.test(email.value.trim())) {
-        email.style.color = "#FF0000";
-        alert("Please enter a valid email address!");
-        valid = false;
-        return false;
-    }
+            // Password validation
+            let password = document.getElementById("password").value;
+            if (password === "") {
+                document.getElementById("passwordError").innerText = "Password is required.";
+                isValid = false;
+            }
 
-    
-    if(password.value.trim() === "" || confirmPassword.value.trim() === "") {
-        password.style.color = "#FF0000";
-        confirmPassword.style.color = "#FF0000";
-        alert("Password and Confirm Password are required!");
-        valid = false;
-        return false;
-    }
+            // Confirm Password validation
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            if (confirmPassword === "") {
+                document.getElementById("confirmPasswordError").innerText = "Please confirm your password.";
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                document.getElementById("confirmPasswordError").innerText = "Passwords do not match.";
+                isValid = false;
+            }
 
-    if(password.value !== confirmPassword.value) {
-        confirmPassword.style.color = "#FF0000";
-        alert("Passwords do not match!");
-        valid = false;
-        return false;
-    }
-
-    return valid; 
-}
+            // Stop submission if invalid
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
